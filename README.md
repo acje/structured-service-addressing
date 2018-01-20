@@ -25,5 +25,7 @@ Caveats: NAT and IP spoofing will at least complicate implementation and operati
 
 # Resources:
 https://tools.ietf.org/html/rfc5375 "IPv6 Unicast Address Assignment Considerations“
+
 https://tools.ietf.org/html/rfc3123 "A DNS RR Type for Lists of Address Prefixes (APL RR)“
+
 https://tools.ietf.org/html/rfc3587 "IPv6 Global Unicast Address Format"
