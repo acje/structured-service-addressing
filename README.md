@@ -1,4 +1,4 @@
-# structured-service-addressing
+# Structured service addressing
 The purpose of this document is to explore the use of client side loadbalancing in new ways using IPv6.
 
 "Structured Service Addressing" using IPv6 unicast addresses to enable controlled client side load sharing and content/direct
@@ -13,7 +13,8 @@ maintain and in some cases creates aggregation points in the infrastructure whic
 of statefull services in modern scale out architectures. Statefull services can have significant efficiency and latency advantages over stateless services with
 statefull backends.
 
-# Proposition: “Structured Service Addressing”; Using a large number of network addresses, mapping one or many addresses to each actual service
+# Proposition:
+“Structured Service Addressing”; Using a large number of network addresses, mapping one or many addresses to each actual service
 endpoint, the client computes the destination address or addresses needed to reach the resource based on a DNS APL RR with a large address range
 describing how to reach the service and optionally; a destination address mapping pattern and “hard to tamper” client state like its own network-source
 address used to communicate with the service. The client then calculates the destination address to reach the service. This could be as simple as picking
