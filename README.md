@@ -29,3 +29,6 @@ https://tools.ietf.org/html/rfc5375 "IPv6 Unicast Address Assignment Considerati
 https://tools.ietf.org/html/rfc3123 "A DNS RR Type for Lists of Address Prefixes (APL RR)“
 
 https://tools.ietf.org/html/rfc3587 "IPv6 Global Unicast Address Format"
+
+More details:
+https://github.com/acje/structured-service-addressing/blob/master/structuredServiceAddressing.pdf
