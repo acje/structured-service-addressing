@@ -14,13 +14,11 @@ of statefull front-end services in modern scale out architectures in order to en
 statefull backends, so this is a hidden cost of todays non-sticky loadbalancer configurations.
 
 # Proposition
-“Structured Service Addressing”; Using a large number of IPv6 addresses, mapping one or many addresses to each actual service
-endpoint, the client computes the destination address or addresses needed to reach the resource based on a DNS APL RR with a large address range
-describing how to reach the service. Optionally a destination address mapping pattern and “hard to tamper” client state, like the network part of its own source
+“Structured Service Addressing” uses a large number of IPv6 addresses to front a service. Actual service endpoints are mapped to one or many addresses in an address range that could be described in a DNS APL RR. Optionally a destination address mapping pattern and “hard to tamper” client state, like the network part of the clients source
 address, is used to communicate with the service. The client is responsible for calculating the destination address to reach the service. Depending on the rules demanded by the service, this could be as simple as picking
 destination address(es) at random to get naïve load sharing or computing the destination address based on the source address, predefined rules and the
-service IP-range to allow for stateless L4 DDoS protection at the cluster side or computing destination address based on the content the client needs form
-the service to directly address a scaled content service or a combination of these three methods.
+service IP-range to allow for stateless L4 DDoS protection at the cluster side, or computing destination address based on the content the client needs form
+the service to directly address a scaled content service, or a combination of these three methods.
 Caveats: NAT and IP spoofing will at least complicate implementation and operation.
 
 # Resources
