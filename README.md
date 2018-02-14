@@ -40,16 +40,16 @@ Having at least 1000 address slices is needed, and to get full uniform coverage 
 
 # Structured Service Addressing - Operation
 
-Client asks DNS for IP address.
-DNS returns a list of subnets (APL – Address Prefix List).
-Client picks destination address(es) to be used based on predefined rules. NOTE: Rules and their format has not been described.
-The address will lead to one of many service endpoints and may depend on one of these example rules;
-“Naïve load sharing”. The client picks a random destination address from supplied prefix list for efficient client side load sharing without any knowledge of number of endpoints, anycast, proxies or load balancers. This will not give any advantage over a service mesh in most cases, but can perhaps be used as a means to more efficiently handle extremely scaled services or more likely in combination with 2) and 3). Can also work with round robin DNS. This scheme will be vulnerable to DDoS attacks.
-“Controlled load sharing by calculating destination address based on source address”. The cluster resource must enforces adherence to rules. This can be done as a scaled out stateless operation in front of the actual resource, comparing source and destination addresses using the predefined rules. Example: source address 64 MSB must match destination address 64 LSB. Computation based on source address may be used to harden against DDoS attacks such that a large group of clients may not coordinate to overwhelm a small number of service endpoints.
-“Directly addressable storage service”. The client computes the destination address to the endpoint holding the content based on (parts of) the contents address. Typically this would be the object address in an object store, but schemes to support some kind of file- or block-storage should be possible.
-Some combination of the above methods or other methods, perhaps based on hashing algorithms.
-Other schemes might be possible perhaps in combination with a L4 protocol carrying a token and/or "proof of work" concepts.
-An analog to frequency hopping could be done by requiring the client to know a combination of time and valid address. This might be useful when deploying military applications on an unrestricted network like the Internet.
+1. Client asks DNS for IP address.
+2. DNS returns a list of subnets (APL – Address Prefix List).
+3. Client picks destination address(es) to be used based on predefined rules. NOTE: Rules and their format has not been described.
+4. The address will lead to one of many service endpoints and may depend on one of these example rules;
+ * “Naïve load sharing”. The client picks a random destination address from supplied prefix list for efficient client side load sharing without any knowledge of number of endpoints, anycast, proxies or load balancers. This will not give any advantage over a service mesh in most cases, but can perhaps be used as a means to more efficiently handle extremely scaled services or more likely in combination with 2) and 3). Can also work with round robin DNS. This scheme will be vulnerable to DDoS attacks.
+ * “Controlled load sharing by calculating destination address based on source address”. The cluster resource must enforces adherence to rules. This can be done as a scaled out stateless operation in front of the actual resource, comparing source and destination addresses using the predefined rules. Example: source address 64 MSB must match destination address 64 LSB. Computation based on source address may be used to harden against DDoS attacks such that a large group of clients may not coordinate to overwhelm a small number of service endpoints.
+ * “Directly addressable storage service”. The client computes the destination address to the endpoint holding the content based on (parts of) the contents address. Typically this would be the object address in an object store, but schemes to support some kind of file- or block-storage should be possible.
+ * Some combination of the above methods or other methods, perhaps based on hashing algorithms.
+ * Other schemes might be possible perhaps in combination with a L4 protocol carrying a token and/or "proof of work" concepts.
+ * An analog to frequency hopping could be done by requiring the client to know a combination of time and valid address. This might be useful when deploying military applications on an unrestricted network like the Internet.
 
 # Structured Service Addressing - Advantage
 
