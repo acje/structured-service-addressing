@@ -30,5 +30,9 @@ https://tools.ietf.org/html/rfc3123 "A DNS RR Type for Lists of Address Prefixes
 
 https://tools.ietf.org/html/rfc3587 "IPv6 Global Unicast Address Format"
 
+# Use case 1: Client-cluster communication – Internal known client, naïve load sharing
+
+![Use case 1](https://github.com/acje/structured-service-addressing/blob/master/images/usecase1.PNG)
+
 # More details
 https://github.com/acje/structured-service-addressing/blob/master/structuredServiceAddressing.pdf
