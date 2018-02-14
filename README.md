@@ -44,40 +44,37 @@ Having at least 1000 address slices is needed, and to get full uniform coverage 
 2. DNS returns a list of subnets (APL – Address Prefix List).
 3. Client picks destination address(es) to be used based on predefined rules. NOTE: Rules and their format has not been described.
 4. The address will lead to one of many service endpoints and may depend on one of these example rules;
- * “Naïve load sharing”. The client picks a random destination address from supplied prefix list for efficient client side load sharing without any knowledge of number of endpoints, anycast, proxies or load balancers. This will not give any advantage over a service mesh in most cases, but can perhaps be used as a means to more efficiently handle extremely scaled services or more likely in combination with 2) and 3). Can also work with round robin DNS. This scheme will be vulnerable to DDoS attacks.
- * “Controlled load sharing by calculating destination address based on source address”. The cluster resource must enforces adherence to rules. This can be done as a scaled out stateless operation in front of the actual resource, comparing source and destination addresses using the predefined rules. Example: source address 64 MSB must match destination address 64 LSB. Computation based on source address may be used to harden against DDoS attacks such that a large group of clients may not coordinate to overwhelm a small number of service endpoints.
- * “Directly addressable storage service”. The client computes the destination address to the endpoint holding the content based on (parts of) the contents address. Typically this would be the object address in an object store, but schemes to support some kind of file- or block-storage should be possible.
- * Some combination of the above methods or other methods, perhaps based on hashing algorithms.
- * Other schemes might be possible perhaps in combination with a L4 protocol carrying a token and/or "proof of work" concepts.
- * An analog to frequency hopping could be done by requiring the client to know a combination of time and valid address. This might be useful when deploying military applications on an unrestricted network like the Internet.
+   * “Naïve load sharing”. The client picks a random destination address from supplied prefix list for efficient client side load sharing without any knowledge of number of endpoints, anycast, proxies or load balancers. This will not give any advantage over a service mesh in most cases, but can perhaps be used as a means to more efficiently handle extremely scaled services or more likely in combination with 2) and 3). Can also work with round robin DNS. This scheme will be vulnerable to DDoS attacks.
+   * “Controlled load sharing by calculating destination address based on source address”. The cluster resource must enforces adherence to rules. This can be done as a scaled out stateless operation in front of the actual resource, comparing source and destination addresses using the predefined rules. Example: source address 64 MSB must match destination address 64 LSB. Computation based on source address may be used to harden against DDoS attacks such that a large group of clients may not coordinate to overwhelm a small number of service endpoints.
+   * “Directly addressable storage service”. The client computes the destination address to the endpoint holding the content based on (parts of) the contents address. Typically this would be the object address in an object store, but schemes to support some kind of file- or block-storage should be possible.
+   * Some combination of the above methods or other methods, perhaps based on hashing algorithms.
+   * Other schemes might be possible perhaps in combination with a L4 protocol carrying a token and/or "proof of work" concepts.
+   * An analog to frequency hopping could be done by requiring the client to know a combination of time and valid address. This might be useful when deploying military applications on an unrestricted network like the Internet.
 
 # Structured Service Addressing - Advantage
 
-Clients may directly connect to endpoints of a massively scaled out resource without having any information about the topology of the cluster (naming abstraction). This may include information like; how many endpoints are actually in use and which IP addresses are mapped to each endpoint.
-
-Clients may directly connect to endpoints without having to go through Stateful proxies accessing topology mapping services, as routing to endpoints is standard (IP) packet routing.
-
-Groups of clients can be forced to share its load on to the cluster by various methods where logic is applied to generate the correct service address to pick. Non-conforming packets would typically be dropped or put on a low priority queue. Stateless access control can be done on a per packet basis without knowledge of a connection. This makes it possible to divide the traffic into many streams before doing stateful inspection or termination.
-
-State replication for highly available endpoints may be limited to an absolute minimum for Stateful protocols or sessions by having only one or a small sett of endpoints responsible for tracking the state of each connection. Client could be aware of how to reach all relevant state replicated endpoints without any cluster topology knowledge. This could make Stateful services useful in a cloud based environment again as the responsibility for state replication is deterministically distributed.
-No client side visibility into how or when the cluster side is scaled.
+* Clients may directly connect to endpoints of a massively scaled out resource without having any information about the topology of the cluster (naming abstraction). This may include information like; how many endpoints are actually in use and which IP addresses are mapped to each endpoint.
+* Clients may directly connect to endpoints without having to go through Stateful proxies accessing topology mapping services, as routing to endpoints is standard (IP) packet routing.
+* Groups of clients can be forced to share its load on to the cluster by various methods where logic is applied to generate the correct service address to pick. Non-conforming packets would typically be dropped or put on a low priority queue. Stateless access control can be done on a per packet basis without knowledge of a connection. This makes it possible to divide the traffic into many streams before doing stateful inspection or termination.
+* State replication for highly available endpoints may be limited to an absolute minimum for Stateful protocols or sessions by having only one or a small sett of endpoints responsible for tracking the state of each connection. Client could be aware of how to reach all relevant state replicated endpoints without any cluster topology knowledge. This could make Stateful services useful in a cloud based environment again as the responsibility for state replication is deterministically distributed.
+* No client side visibility into how or when the cluster side is scaled.
 
 # Structured Service Addressing - Requirements
 
-Client side
-Client side capability to handle lists of subnets (DNS APL “address prefix lists” Resource Record).
-Predefined rules for the client to pick addresses from the address space provided with APL. Not aware of any such implementation today. The need for this capability is also mentioned in the RFC for APL. In chapter 7. Applicability Statement. 
-Cluster side
-Many cluster side loopback interfaces for each endpoint (POD, VM) capable of handling large (IPv6) subnets to terminate TCP or other protocol requiring a Stateful endpoint. Handling many subnets per endpoint serves to hide the topology from the client while scaling the resource by allowing the resource to reallocate subnets to other endpoints. If the resource is not content addressable the subnets can be of size /128. For a content addressable resource the large subnets can be used to map a portion of a storage address space to an IP address range, allowing the client and network to cooperate to locate the endpoint(s) that is holding the content.
-Network
-Large address space, to “carry more information in the address fields”, IPv6 in practice.
-IPv6 ('globals') [RFC3587] reachability from client to all service endpoints. NAT will at least complicate operation.
-Capability to move many small subnets inside the cluster between endpoints. (L3 SDN and service mesh)
-More anti-spoofing capabilities on the Internet?
+* Client side
+   * Client side capability to handle lists of subnets (DNS APL “address prefix lists” Resource Record).
+   * Predefined rules for the client to pick addresses from the address space provided with APL. Not aware of any such implementation today. The need for this capability is also mentioned in the RFC for APL. In chapter 7. Applicability Statement. 
+* Cluster side
+   * Many cluster side loopback interfaces for each endpoint (POD, VM) capable of handling large (IPv6) subnets to terminate TCP or other protocol requiring a Stateful endpoint. Handling many subnets per endpoint serves to hide the topology from the client while scaling the resource by allowing the resource to reallocate subnets to other endpoints. If the resource is not content addressable the subnets can be of size /128. For a content addressable resource the large subnets can be used to map a portion of a storage address space to an IP address range, allowing the client and network to cooperate to locate the endpoint(s) that is holding the content.
+* Network
+   * Large address space, to “carry more information in the address fields”, IPv6 in practice.
+   * IPv6 ('globals') [RFC3587] reachability from client to all service endpoints. NAT will at least complicate operation.
+   * Capability to move many small subnets inside the cluster between endpoints. (L3 SDN and service mesh)
+   * More anti-spoofing capabilities on the Internet?
 
-Possible starting point for a roadmap
-Implement some simple client and cluster side rules in a sidecar proxy to test functionality inside a datacenter for service to service connections.
-Probably need a “connection upgrade” mechanism (DNS) that legacy devices will ignore. Changing the DNS behavior of end user devices will be a very slow process.
+* Possible starting point for a roadmap
+   * Implement some simple client and cluster side rules in a sidecar proxy to test functionality inside a datacenter for service to service connections.
+   * Probably need a “connection upgrade” mechanism (DNS) that legacy devices will ignore. Changing the DNS behavior of end user devices will be a very slow process.
 
 # Use case 2: Client-cluster communication – Internal known client, content addressable storage
 
