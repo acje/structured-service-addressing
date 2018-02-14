@@ -30,5 +30,5 @@ https://tools.ietf.org/html/rfc3123 "A DNS RR Type for Lists of Address Prefixes
 
 https://tools.ietf.org/html/rfc3587 "IPv6 Global Unicast Address Format"
 
-More details:
+# More details
 https://github.com/acje/structured-service-addressing/blob/master/structuredServiceAddressing.pdf
