@@ -81,16 +81,13 @@ Probably need a “connection upgrade” mechanism (DNS) that legacy devices wil
 
 # Use case 2: Client-cluster communication – Internal known client, content addressable storage
 
-
+![Use case 2](https://github.com/acje/structured-service-addressing/blob/master/images/usecase2.PNG)
 
 Notes:
 Allow client to directly connect to the instance holding an object or block with a known address by implementing a distributed addressable memory where part of the IPv6 address matches the object address such that it is possible to calculate which IP address the object is located at.
 
 # Use case 3: Client-cluster communication – External unknown client, forced load sharing: overview
+![Use case 3](https://github.com/acje/structured-service-addressing/blob/master/images/usecase3.PNG)
 
 # Use case 3: Client-cluster communication – External unknown client, forced load sharing: routing example
-
-
-# More details
-(original document, not maintained)
-https://github.com/acje/structured-service-addressing/blob/master/structuredServiceAddressing.pdf
+![Use case 3 routing](https://github.com/acje/structured-service-addressing/blob/master/images/usecase3r.PNG)
