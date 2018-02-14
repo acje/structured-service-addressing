@@ -51,6 +51,45 @@ Some combination of the above methods or other methods, perhaps based on hashing
 Other schemes might be possible perhaps in combination with a L4 protocol carrying a token and/or "proof of work" concepts.
 An analog to frequency hopping could be done by requiring the client to know a combination of time and valid address. This might be useful when deploying military applications on an unrestricted network like the Internet.
 
+# Structured Service Addressing - Advantage
+
+Clients may directly connect to endpoints of a massively scaled out resource without having any information about the topology of the cluster (naming abstraction). This may include information like; how many endpoints are actually in use and which IP addresses are mapped to each endpoint.
+
+Clients may directly connect to endpoints without having to go through Stateful proxies accessing topology mapping services, as routing to endpoints is standard (IP) packet routing.
+
+Groups of clients can be forced to share its load on to the cluster by various methods where logic is applied to generate the correct service address to pick. Non-conforming packets would typically be dropped or put on a low priority queue. Stateless access control can be done on a per packet basis without knowledge of a connection. This makes it possible to divide the traffic into many streams before doing stateful inspection or termination.
+
+State replication for highly available endpoints may be limited to an absolute minimum for Stateful protocols or sessions by having only one or a small sett of endpoints responsible for tracking the state of each connection. Client could be aware of how to reach all relevant state replicated endpoints without any cluster topology knowledge. This could make Stateful services useful in a cloud based environment again as the responsibility for state replication is deterministically distributed.
+No client side visibility into how or when the cluster side is scaled.
+
+# Structured Service Addressing - Requirements
+
+Client side
+Client side capability to handle lists of subnets (DNS APL “address prefix lists” Resource Record).
+Predefined rules for the client to pick addresses from the address space provided with APL. Not aware of any such implementation today. The need for this capability is also mentioned in the RFC for APL. In chapter 7. Applicability Statement. 
+Cluster side
+Many cluster side loopback interfaces for each endpoint (POD, VM) capable of handling large (IPv6) subnets to terminate TCP or other protocol requiring a Stateful endpoint. Handling many subnets per endpoint serves to hide the topology from the client while scaling the resource by allowing the resource to reallocate subnets to other endpoints. If the resource is not content addressable the subnets can be of size /128. For a content addressable resource the large subnets can be used to map a portion of a storage address space to an IP address range, allowing the client and network to cooperate to locate the endpoint(s) that is holding the content.
+Network
+Large address space, to “carry more information in the address fields”, IPv6 in practice.
+IPv6 ('globals') [RFC3587] reachability from client to all service endpoints. NAT will at least complicate operation.
+Capability to move many small subnets inside the cluster between endpoints. (L3 SDN and service mesh)
+More anti-spoofing capabilities on the Internet?
+
+Possible starting point for a roadmap
+Implement some simple client and cluster side rules in a sidecar proxy to test functionality inside a datacenter for service to service connections.
+Probably need a “connection upgrade” mechanism (DNS) that legacy devices will ignore. Changing the DNS behavior of end user devices will be a very slow process.
+
+# Use case 2: Client-cluster communication – Internal known client, content addressable storage
+
+
+
+Notes:
+Allow client to directly connect to the instance holding an object or block with a known address by implementing a distributed addressable memory where part of the IPv6 address matches the object address such that it is possible to calculate which IP address the object is located at.
+
+# Use case 3: Client-cluster communication – External unknown client, forced load sharing: overview
+
+# Use case 3: Client-cluster communication – External unknown client, forced load sharing: routing example
+
 
 # More details
 (original document, not maintained)
