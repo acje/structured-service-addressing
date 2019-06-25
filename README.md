@@ -88,3 +88,7 @@ Allow client to directly connect to the instance holding an object or block with
 
 # Use case 3: Client-cluster communication – External unknown client, forced load sharing: routing example
 ![Use case 3 routing](https://github.com/acje/structured-service-addressing/blob/master/images/usecase3r.PNG)
+
+
+new links:
+https://ai.google/research/pubs/pub48030
